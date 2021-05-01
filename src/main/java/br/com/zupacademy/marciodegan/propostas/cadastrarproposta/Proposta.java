@@ -3,7 +3,6 @@ package br.com.zupacademy.marciodegan.propostas.cadastrarproposta;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 
 import java.math.BigDecimal;
 
@@ -22,6 +21,10 @@ public class Proposta {
     private String endereco;
     @Column(nullable = false)
     private BigDecimal salario;
+
+    @Deprecated
+    public Proposta() {
+    }
 
     public Proposta(String documento, String email, String endereco, BigDecimal salario) {
         this.documento = documento;
