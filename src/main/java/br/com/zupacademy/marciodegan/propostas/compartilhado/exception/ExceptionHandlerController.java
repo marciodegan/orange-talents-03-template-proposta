@@ -1,15 +1,13 @@
-package br.com.zupacademy.marciodegan.propostas.compartilhado;
+package br.com.zupacademy.marciodegan.propostas.compartilhado.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -28,5 +26,14 @@ public class ExceptionHandlerController {
             respostas.add(erroDto);
         });
         return respostas;
+    }
+
+    @ExceptionHandler(FeignExceptionError.class)
+    public ResponseEntity<ErroPadronizado> handleValidationError(FeignExceptionError exception){
+        Collection<String> mensagens = new ArrayList<>();
+        mensagens.add(exception.getReason());
+
+        ErroPadronizado erroPadronizado = new ErroPadronizado(mensagens);
+        return ResponseEntity.status(exception.getHttpStatus()).body(erroPadronizado);
     }
 }
